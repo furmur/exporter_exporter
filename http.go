@@ -23,6 +23,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"sort"
 
 	"golang.org/x/net/context/ctxhttp"
 
@@ -82,6 +83,10 @@ func (c httpConfig) GatherWithContext(ctx context.Context, r *http.Request) prom
 
 			result = append(result, &mf)
 		}
+
+		sort.SliceStable(result, func(i, j int) bool {
+			return *result[i].Name < *result[j].Name
+		})
 
 		return result, nil
 	}
